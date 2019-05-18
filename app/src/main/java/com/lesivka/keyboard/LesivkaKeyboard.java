@@ -21,8 +21,6 @@ public class LesivkaKeyboard extends InputMethodService implements
     private Keyboard qwerty;
     private Keyboard symbols;
 
-    private boolean caps = false;
-
     private boolean acutable(String s) {
         return (!s.isEmpty() && (ACUTABLE.contains(s) || ACUTABLE_UPPER.contains(s)));
     }
@@ -48,8 +46,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 ic.deleteSurroundingText(1, 0);
                 break;
             case Keyboard.KEYCODE_SHIFT:
-                caps = !caps;
-                kv.setShifted(caps);
+                kv.setShifted(!kv.isShifted());
                 break;
             case Keyboard.KEYCODE_DONE:
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
@@ -70,7 +67,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 ic.setComposingText("", 1);  // trick to fix an input of acute in Android Browser
             default:
                 char code = (char) primaryCode;
-                if (Character.isLetter(code) && caps) {
+                if (Character.isLetter(code) && kv.isShifted()) {
                     code = Character.toUpperCase(code);
                 }
                 ic.commitText(String.valueOf(code), 1);
