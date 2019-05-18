@@ -67,6 +67,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 if (!acutable(before)) {
                     break;
                 }
+                ic.setComposingText("", 1);  // trick to fix an input of acute in Android Browser
             default:
                 char code = (char) primaryCode;
                 if (Character.isLetter(code) && caps) {
