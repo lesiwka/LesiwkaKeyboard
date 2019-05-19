@@ -46,7 +46,7 @@
 
     <Row android:rowEdgeFlags="bottom">
         <Key android:keyLabel="\?123" android:codes="-2" />
-        <Key android:keyLabel="\u21c4" android:codes="-101" />
+        <Key android:keyLabel="\u21c5" android:codes="-101" />
         <Key android:keyLabel="," />
         <Key android:keyLabel=" " android:keyWidth="40%p" />
         <Key android:keyLabel="\u2ca" android:codes="0x301"/>
