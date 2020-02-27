@@ -69,6 +69,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 char code = (char) primaryCode;
                 if (Character.isLetter(code) && kv.isShifted()) {
                     code = Character.toUpperCase(code);
+                    kv.setShifted(false);
                 }
                 ic.commitText(String.valueOf(code), 1);
         }
