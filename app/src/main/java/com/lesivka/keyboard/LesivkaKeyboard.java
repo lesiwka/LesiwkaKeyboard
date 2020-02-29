@@ -14,13 +14,14 @@ public class LesivkaKeyboard extends InputMethodService implements
 
     private static final String ACUTABLE = "bcčdđfghklmnprsštvxzžƶ";
     private static final String ACUTABLE_UPPER = ACUTABLE.toUpperCase();
+    private static final long DOUBLE_PRESS_THRESHOLD = (long) 3e8;
     private static final int KEYCODE_SWITCH = -101;
     private static final int KEYCODE_ACUTE = 0x301;
     private static final String SHIFT_LABEL = "\u21e7";
     private static final String SHIFT_LABEL_LOCK = "\u21ea";
 
     private int lastCode;
-    private float lastKeyPressed;
+    private long lastKeyPressed;
     private boolean capsLock;
 
     private KeyboardView kv;
@@ -52,8 +53,8 @@ public class LesivkaKeyboard extends InputMethodService implements
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        float currentKeyPressed = System.nanoTime();
-        boolean doubleKey = currentKeyPressed - lastKeyPressed < 3e8;
+        long currentKeyPressed = System.nanoTime();
+        boolean doubleKey = currentKeyPressed - lastKeyPressed < DOUBLE_PRESS_THRESHOLD;
         InputConnection ic = getCurrentInputConnection();
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
