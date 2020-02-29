@@ -19,6 +19,7 @@ public class LesivkaKeyboard extends InputMethodService implements
     private static final String SHIFT_LABEL = "\u21e7";
     private static final String SHIFT_LABEL_LOCK = "\u21ea";
 
+    private int lastCode;
     private float lastKeyPressed;
     private boolean capsLock;
 
@@ -52,6 +53,7 @@ public class LesivkaKeyboard extends InputMethodService implements
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         float currentKeyPressed = System.nanoTime();
+        boolean doubleKey = currentKeyPressed - lastKeyPressed < 3e8;
         InputConnection ic = getCurrentInputConnection();
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
@@ -59,7 +61,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 break;
             case Keyboard.KEYCODE_SHIFT:
                 boolean isShifted = kv.isShifted();
-                if ((currentKeyPressed - lastKeyPressed < 3e8) && isShifted) {
+                if (doubleKey && isShifted) {
                     capsLock = true;
                     shift.label = SHIFT_LABEL_LOCK;
                     shift.on = true;
@@ -87,6 +89,9 @@ public class LesivkaKeyboard extends InputMethodService implements
                 }
                 ic.setComposingText("", 1);  // trick to fix an input of acute in Android Browser
             default:
+                if (doubleKey && lastCode == primaryCode) {
+                    primaryCode = KEYCODE_ACUTE;
+                }
                 char code = (char) primaryCode;
                 if (Character.isLetter(code) && kv.isShifted()) {
                     code = Character.toUpperCase(code);
@@ -96,6 +101,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 }
                 ic.commitText(String.valueOf(code), 1);
         }
+        lastCode = primaryCode;
         lastKeyPressed = currentKeyPressed;
     }
 
