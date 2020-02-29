@@ -91,16 +91,17 @@ public class LesivkaKeyboard extends InputMethodService implements
                 ic.setComposingText("", 1);  // trick to fix an input of acute in Android Browser
             default:
                 if (doubleKey && lastCode == primaryCode) {
-                    primaryCode = KEYCODE_ACUTE;
-                }
-                char code = (char) primaryCode;
-                if (Character.isLetter(code) && kv.isShifted()) {
-                    code = Character.toUpperCase(code);
-                    if (!capsLock) {
-                        kv.setShifted(false);
+                    onKey(KEYCODE_ACUTE, new int[] {});
+                } else {
+                    char code = (char) primaryCode;
+                    if (Character.isLetter(code) && kv.isShifted()) {
+                        code = Character.toUpperCase(code);
+                        if (!capsLock) {
+                            kv.setShifted(false);
+                        }
                     }
+                    ic.commitText(String.valueOf(code), 1);
                 }
-                ic.commitText(String.valueOf(code), 1);
         }
         lastCode = primaryCode;
         lastKeyPressed = currentKeyPressed;
