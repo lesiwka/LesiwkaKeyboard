@@ -2,6 +2,7 @@ package com.lesivka.keyboard;
 
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,11 +16,17 @@ public class LesivkaKeyboard extends InputMethodService implements
     private static final String ACUTABLE_UPPER = ACUTABLE.toUpperCase();
     private static final int KEYCODE_SWITCH = -101;
     private static final int KEYCODE_ACUTE = 0x301;
+    private static final String SHIFT_LABEL = "\u21e7";
+    private static final String SHIFT_LABEL_LOCK = "\u21ea";
+
+    private float lastKeyPressed;
+    private boolean capsLock;
 
     private KeyboardView kv;
     private Keyboard current;
     private Keyboard qwerty;
     private Keyboard symbols;
+    private Key shift;
 
     private boolean acutable(String s) {
         return (!s.isEmpty() && (ACUTABLE.contains(s) || ACUTABLE_UPPER.contains(s)));
@@ -27,8 +34,12 @@ public class LesivkaKeyboard extends InputMethodService implements
 
     @Override
     public View onCreateInputView() {
+        lastKeyPressed = System.nanoTime();
+        capsLock = false;
+
         current = qwerty = new Keyboard(this, R.xml.qwerty);
         symbols = new Keyboard(this, R.xml.symbols);
+        shift = qwerty.getKeys().get(qwerty.getShiftKeyIndex());
 
         kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
         kv.setPreviewEnabled(false);
@@ -40,13 +51,23 @@ public class LesivkaKeyboard extends InputMethodService implements
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
+        float currentKeyPressed = System.nanoTime();
         InputConnection ic = getCurrentInputConnection();
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
                 ic.deleteSurroundingText(1, 0);
                 break;
             case Keyboard.KEYCODE_SHIFT:
-                kv.setShifted(!kv.isShifted());
+                boolean isShifted = kv.isShifted();
+                if ((currentKeyPressed - lastKeyPressed < 3e8) && isShifted) {
+                    capsLock = true;
+                    shift.label = SHIFT_LABEL_LOCK;
+                    shift.on = true;
+                } else {
+                    capsLock = false;
+                    shift.label = SHIFT_LABEL;
+                    kv.setShifted(!isShifted);
+                }
                 break;
             case Keyboard.KEYCODE_DONE:
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
@@ -69,10 +90,13 @@ public class LesivkaKeyboard extends InputMethodService implements
                 char code = (char) primaryCode;
                 if (Character.isLetter(code) && kv.isShifted()) {
                     code = Character.toUpperCase(code);
-                    kv.setShifted(false);
+                    if (!capsLock) {
+                        kv.setShifted(false);
+                    }
                 }
                 ic.commitText(String.valueOf(code), 1);
         }
+        lastKeyPressed = currentKeyPressed;
     }
 
     @Override
