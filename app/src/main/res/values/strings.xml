@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Leśivka Keyboard</string>
     <string name="subtype">Ukrainian (Leśivka)</string>
-    <string name="settings_header">Settings</string>
+    <string name="settings_header">Parameters</string>
     <string name="auto_acute">Acute by double tap on consonants</string>
-    <string name="double_tap_delay">Double tap delay</string>
+    <string name="double_tap_delay">Double tap delay (ms)</string>
     <string name="keyboard_settings_button">Go to Settings</string>
     <string name="keyboard_settings_lable">Enable Leśivka Keyboard in layout settings</string>
 </resources>
