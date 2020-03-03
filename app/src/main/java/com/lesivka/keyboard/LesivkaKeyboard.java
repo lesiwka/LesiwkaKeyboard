@@ -61,15 +61,15 @@ public class LesivkaKeyboard extends InputMethodService implements
                 ic.deleteSurroundingText(1, 0);
                 break;
             case Keyboard.KEYCODE_SHIFT:
-                boolean isShifted = kv.isShifted();
-                if (doubleKey && isShifted) {
+                if (doubleKey) {
                     capsLock = true;
                     shift.label = SHIFT_LABEL_LOCK;
                     shift.on = true;
+                    kv.setShifted(true);
                 } else {
                     capsLock = false;
                     shift.label = SHIFT_LABEL;
-                    kv.setShifted(!isShifted);
+                    kv.setShifted(!kv.isShifted());
                 }
                 break;
             case Keyboard.KEYCODE_DONE:
