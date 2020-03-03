@@ -3,14 +3,10 @@
     <PreferenceCategory android:title="@string/settings_header">
 
         <EditTextPreference
-            android:id="@+id/double_tap_delay"
-            android:defaultValue="100"
-            android:inputType="number"
+            android:dialogLayout="@layout/slider"
             android:key="double_tap_delay"
-            android:maxLength="3"
             android:title="@string/double_tap_delay" />
         <SwitchPreference
-            android:id="@+id/acute"
             android:defaultValue="true"
             android:key="acute"
             android:title="@string/auto_acute" />
