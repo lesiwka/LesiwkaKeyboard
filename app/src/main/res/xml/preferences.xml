@@ -2,8 +2,10 @@
 
     <PreferenceCategory android:title="@string/settings_header">
 
-        <EditTextPreference
-            android:dialogLayout="@layout/slider"
+        <ListPreference
+            android:defaultValue="300"
+            android:entries="@array/double_tap_delay"
+            android:entryValues="@array/double_tap_delay"
             android:key="double_tap_delay"
             android:title="@string/double_tap_delay" />
         <SwitchPreference

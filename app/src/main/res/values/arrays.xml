@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="double_tap_delay">
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+    </string-array>
+</resources>
