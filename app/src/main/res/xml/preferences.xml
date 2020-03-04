@@ -2,16 +2,17 @@
 
     <PreferenceCategory android:title="@string/settings_header">
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="acute"
+            android:title="@string/auto_acute" />
         <ListPreference
             android:defaultValue="300"
             android:entries="@array/double_tap_delay"
             android:entryValues="@array/double_tap_delay"
             android:key="double_tap_delay"
+            android:summary="%s"
             android:title="@string/double_tap_delay" />
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="acute"
-            android:title="@string/auto_acute" />
 
     </PreferenceCategory>
 
