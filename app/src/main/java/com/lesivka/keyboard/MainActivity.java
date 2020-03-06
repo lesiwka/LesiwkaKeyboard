@@ -3,7 +3,6 @@ package com.lesivka.keyboard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -15,7 +14,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getFragmentManager().beginTransaction().add(R.id.main, new SettingsFragment()).commit();
+        getFragmentManager().beginTransaction().add(R.id.main, new Settings()).commit();
         checkEnabled();
     }
 
@@ -43,15 +42,8 @@ public class MainActivity extends Activity {
     }
 
     public void onClickKeyboardSettings(View v) {
-        Intent intent=new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
+        Intent intent = new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
         startActivity(intent);
     }
 
-    public static class SettingsFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-        }
-    }
 }

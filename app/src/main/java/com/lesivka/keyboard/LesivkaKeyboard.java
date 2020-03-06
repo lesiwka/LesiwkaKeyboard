@@ -1,5 +1,6 @@
 package com.lesivka.keyboard;
 
+import android.content.SharedPreferences;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
@@ -14,7 +15,6 @@ public class LesivkaKeyboard extends InputMethodService implements
 
     private static final String ACUTABLE = "bcčdđfghklmnprsštvxzžƶ";
     private static final String ACUTABLE_UPPER = ACUTABLE.toUpperCase();
-    private static final long DOUBLE_PRESS_THRESHOLD = (long) 3e8;
     private static final int KEYCODE_SWITCH = -101;
     private static final int KEYCODE_ACUTE = 0x301;
     private static final String SHIFT_LABEL = "\u21e7";
@@ -51,11 +51,29 @@ public class LesivkaKeyboard extends InputMethodService implements
         return kv;
     }
 
+    private SharedPreferences getPreferences() {
+        return getSharedPreferences(Settings.PREF_NAME, Settings.PREF_MODE);
+    }
+
+    private long getDoubleTapThreshold() {
+        String s = getPreferences().getString(Settings.DOUBLE_TAP_DELAY, null);
+        if (s == null) {
+            return Settings.DOUBLE_TAP_DELAY_DEFAULT;
+        }
+        return Long.parseLong(s) * 1_000_000;
+    }
+
+    private boolean getAutoAcute() {
+        return getPreferences().getBoolean(Settings.AUTO_ACUTE, Settings.AUTO_ACUTE_DEFAULT);
+    }
+
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         long currentKeyPressed = System.nanoTime();
-        boolean doubleKey = currentKeyPressed - lastKeyPressed < DOUBLE_PRESS_THRESHOLD;
+        boolean doubleKey = currentKeyPressed - lastKeyPressed < getDoubleTapThreshold();
+
         InputConnection ic = getCurrentInputConnection();
+
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
                 ic.deleteSurroundingText(1, 0);
@@ -90,7 +108,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 }
                 ic.setComposingText("", 1);  // trick to fix an input of acute in Android Browser
             default:
-                if (doubleKey && lastCode == primaryCode) {
+                if (getAutoAcute() && doubleKey && lastCode == primaryCode) {
                     onKey(KEYCODE_ACUTE, new int[] {});
                 } else {
                     char code = (char) primaryCode;
@@ -103,6 +121,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                     ic.commitText(String.valueOf(code), 1);
                 }
         }
+
         lastCode = primaryCode;
         lastKeyPressed = currentKeyPressed;
     }
