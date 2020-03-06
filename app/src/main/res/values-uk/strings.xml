@@ -2,7 +2,7 @@
     <string name="app_name">Набірниця</string>
     <string name="subtype">Лесівка</string>
     <string name="settings_header">Параметри</string>
-    <string name="auto_acute">Скіпка подвійним дотиком на приголосних</string>
+    <string name="auto_acute">Скіпка подвійним дотиком приголосних</string>
     <string name="double_tap_delay">Затримка подвійного дотику (мс)</string>
     <string name="keyboard_settings_button">Налаштування</string>
     <string name="keyboard_settings_lable">Увімкніть Набірницю у налаштуваннях</string>
