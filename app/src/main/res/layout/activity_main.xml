@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
         <TextView
-            style="@android:style/Widget.DeviceDefault.TextView.SpinnerItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -27,6 +26,24 @@
             android:onClick="onClickKeyboardSettings"
             android:text="@string/keyboard_settings_button" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
     </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.lesivka.keyboard.Settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
 </LinearLayout>
