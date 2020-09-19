@@ -5,5 +5,5 @@
     <string name="auto_acute">Acute by double tap on consonants</string>
     <string name="double_tap_delay">Double tap delay (ms)</string>
     <string name="keyboard_settings_button">Go to Settings</string>
-    <string name="keyboard_settings_lable">Enable Leśivka Keyboard in layout settings</string>
+    <string name="keyboard_settings_label">Enable Leśivka Keyboard in layout settings</string>
 </resources>

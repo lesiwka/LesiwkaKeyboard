@@ -19,7 +19,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:text="@string/keyboard_settings_lable" />
+            android:text="@string/keyboard_settings_label" />
 
         <Button
             android:layout_width="wrap_content"
