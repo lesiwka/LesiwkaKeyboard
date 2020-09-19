@@ -6,4 +6,5 @@
     <string name="double_tap_delay">Double tap delay (ms)</string>
     <string name="keyboard_settings_button">Go to Settings</string>
     <string name="keyboard_settings_label">Enable Leśivka Keyboard in layout settings</string>
+    <string name="visit_www">For more info visit\nlesivka.com</string>
 </resources>

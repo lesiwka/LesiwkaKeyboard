@@ -46,4 +46,14 @@
         android:layout_height="1dp"
         android:background="?android:attr/listDivider" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:autoLink="web"
+        android:elegantTextHeight="false"
+        android:text="@string/visit_www"
+        android:textAlignment="center" />
+
 </LinearLayout>
