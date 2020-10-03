@@ -12,6 +12,8 @@ public class Settings extends PreferenceFragment {
     public static final boolean AUTO_ACUTE_DEFAULT = true;
     public static final String DOUBLE_TAP_DELAY = "double_tap_delay";
     public static final long DOUBLE_TAP_DELAY_DEFAULT = 300_000_000;
+    public static final String VIBRATE = "vibrate";
+    public static final boolean VIBRATE_DEFAULT = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

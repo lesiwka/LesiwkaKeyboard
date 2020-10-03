@@ -13,6 +13,10 @@
             android:key="double_tap_delay"
             android:summary="%s"
             android:title="@string/double_tap_delay" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="vibrate"
+            android:title="@string/vibrate" />
 
     </PreferenceCategory>
 

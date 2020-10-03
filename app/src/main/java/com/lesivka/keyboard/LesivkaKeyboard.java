@@ -1,10 +1,12 @@
 package com.lesivka.keyboard;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
+import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
@@ -29,6 +31,7 @@ public class LesivkaKeyboard extends InputMethodService implements
     private Keyboard qwerty;
     private Keyboard symbols;
     private Key shift;
+    private Vibrator v;
 
     private boolean acutable(String s) {
         return (!s.isEmpty() && (ACUTABLE.contains(s) || ACUTABLE_UPPER.contains(s)));
@@ -48,6 +51,8 @@ public class LesivkaKeyboard extends InputMethodService implements
         kv.setKeyboard(current);
         kv.setOnKeyboardActionListener(this);
 
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
         return kv;
     }
 
@@ -65,6 +70,10 @@ public class LesivkaKeyboard extends InputMethodService implements
 
     private boolean getAutoAcute() {
         return getPreferences().getBoolean(Settings.AUTO_ACUTE, Settings.AUTO_ACUTE_DEFAULT);
+    }
+
+    private boolean getVibrate() {
+        return getPreferences().getBoolean(Settings.VIBRATE, Settings.VIBRATE_DEFAULT);
     }
 
     @Override
@@ -127,7 +136,11 @@ public class LesivkaKeyboard extends InputMethodService implements
     }
 
     @Override
-    public void onPress(int primaryCode) {}
+    public void onPress(int primaryCode) {
+        if (getVibrate()) {
+            v.vibrate(50);
+        }
+    }
 
     @Override
     public void onRelease(int primaryCode) {}
