@@ -82,6 +82,7 @@ public class LesivkaKeyboard extends InputMethodService implements
         boolean doubleKey = currentKeyPressed - lastKeyPressed < getDoubleTapThreshold();
 
         InputConnection ic = getCurrentInputConnection();
+        String before = ic.getTextBeforeCursor(1, 0).toString();
 
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
@@ -111,13 +112,12 @@ public class LesivkaKeyboard extends InputMethodService implements
                 imm.showInputMethodPicker();
                 break;
             case KEYCODE_ACUTE:
-                String before = ic.getTextBeforeCursor(1, 0).toString();
                 if (!acutable(before)) {
                     break;
                 }
                 ic.setComposingText("", 1);  // trick to fix an input of acute in Android Browser
             default:
-                if (getAutoAcute() && doubleKey && lastCode == primaryCode) {
+                if (getAutoAcute() && doubleKey && lastCode == primaryCode && acutable(before)) {
                     onKey(KEYCODE_ACUTE, new int[] {});
                 } else {
                     char code = (char) primaryCode;
