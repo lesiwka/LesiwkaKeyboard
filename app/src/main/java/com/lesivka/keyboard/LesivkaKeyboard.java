@@ -9,8 +9,12 @@ import android.inputmethodservice.KeyboardView;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LesivkaKeyboard extends InputMethodService implements
         KeyboardView.OnKeyboardActionListener {
@@ -19,6 +23,7 @@ public class LesivkaKeyboard extends InputMethodService implements
     private static final String ACUTABLE_UPPER = ACUTABLE.toUpperCase();
     private static final int KEYCODE_SWITCH = -101;
     private static final int KEYCODE_ACUTE = 0x301;
+    private static final int KEYCODE_SPACE = 0x20;
     private static final String SHIFT_LABEL = "\u21e7";
     private static final String SHIFT_LABEL_LOCK = "\u21ea";
 
@@ -32,6 +37,8 @@ public class LesivkaKeyboard extends InputMethodService implements
     private Keyboard symbols;
     private Key shift;
     private Vibrator v;
+    private Timer longPressTimer;
+    private boolean processing;
 
     private boolean acutable(String s) {
         return (!s.isEmpty() && (ACUTABLE.contains(s) || ACUTABLE_UPPER.contains(s)));
@@ -52,6 +59,9 @@ public class LesivkaKeyboard extends InputMethodService implements
         kv.setOnKeyboardActionListener(this);
 
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        longPressTimer = new Timer();
+        processing = true;
 
         return kv;
     }
@@ -76,8 +86,16 @@ public class LesivkaKeyboard extends InputMethodService implements
         return getPreferences().getBoolean(Settings.VIBRATE, Settings.VIBRATE_DEFAULT);
     }
 
+    private void methodSwitch() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.showInputMethodPicker();
+    }
+
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
+        if (!processing) {
+            return;
+        }
         long currentKeyPressed = System.nanoTime();
         boolean doubleKey = currentKeyPressed - lastKeyPressed < getDoubleTapThreshold();
 
@@ -108,8 +126,7 @@ public class LesivkaKeyboard extends InputMethodService implements
                 kv.setKeyboard(current);
                 break;
             case KEYCODE_SWITCH:
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.showInputMethodPicker();
+                methodSwitch();
                 break;
             case KEYCODE_ACUTE:
                 if (!acutable(before)) {
@@ -136,14 +153,30 @@ public class LesivkaKeyboard extends InputMethodService implements
     }
 
     @Override
-    public void onPress(int primaryCode) {
+    public void onPress(final int primaryCode) {
         if (getVibrate()) {
             v.vibrate(50);
         }
+
+        longPressTimer.cancel();
+
+        longPressTimer = new Timer();
+        longPressTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (primaryCode == KEYCODE_SPACE) {
+                    processing = false;
+                    LesivkaKeyboard.this.methodSwitch();
+                }
+            }
+        }, ViewConfiguration.getLongPressTimeout());
     }
 
     @Override
-    public void onRelease(int primaryCode) {}
+    public void onRelease(int primaryCode) {
+        longPressTimer.cancel();
+        processing = true;
+    }
 
     @Override
     public void onText(CharSequence charSequence) {}
