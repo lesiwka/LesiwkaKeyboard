@@ -26,7 +26,7 @@
         <Key android:keyLabel="+" />
         <Key android:keyLabel="(" />
         <Key android:keyLabel=")" />
-        <Key android:keyLabel="/" />
+        <Key android:keyLabel="/" android:keyEdgeFlags="right" />
     </Row>
 
     <Row>
@@ -44,13 +44,13 @@
     </Row>
 
     <Row android:rowEdgeFlags="bottom">
-        <Key android:keyLabel="ABC" android:codes="-2" />
+        <Key android:keyLabel="ABC" android:codes="-2" android:keyWidth="15%p" />
         <Key android:keyLabel="[" />
         <Key android:keyLabel="]" />
-        <Key android:keyLabel=" " android:codes="32" android:keyWidth="40%p" />
+        <Key android:keyLabel=" " android:codes="32" android:keyWidth="30%p" />
         <Key android:keyLabel="{" />
         <Key android:keyLabel="}" />
-        <Key android:keyLabel="\u2705" android:codes="-4" />
+        <Key android:keyLabel="\u2705" android:codes="-4" android:keyWidth="15%p" />
     </Row>
 
 </Keyboard>
