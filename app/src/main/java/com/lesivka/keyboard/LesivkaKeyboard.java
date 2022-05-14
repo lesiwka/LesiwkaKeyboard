@@ -24,6 +24,7 @@ public class LesivkaKeyboard extends InputMethodService implements
     private static final int KEYCODE_SWITCH = -101;
     private static final int KEYCODE_ACUTE = 0x301;
     private static final int KEYCODE_SPACE = 0x20;
+    private static final int KEYCODE_FULL_STOP = 0x2e;
     private static final String SHIFT_LABEL = "\u21e7";
     private static final String SHIFT_LABEL_LOCK = "\u21ea";
 
@@ -56,6 +57,7 @@ public class LesivkaKeyboard extends InputMethodService implements
         kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
         kv.setPreviewEnabled(false);
         kv.setKeyboard(current);
+        kv.setShifted(true);
         kv.setOnKeyboardActionListener(this);
 
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -101,10 +103,15 @@ public class LesivkaKeyboard extends InputMethodService implements
 
         InputConnection ic = getCurrentInputConnection();
         String before = ic.getTextBeforeCursor(1, 0).toString();
+        boolean autoShift = current == qwerty && !capsLock;
 
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
                 ic.deleteSurroundingText(1, 0);
+                if (autoShift) {
+                    String text = ic.getTextBeforeCursor(10, 0).toString().trim();
+                    kv.setShifted(text.isEmpty() || (int) text.charAt(text.length() - 1) == KEYCODE_FULL_STOP);
+                }
                 break;
             case Keyboard.KEYCODE_SHIFT:
                 if (doubleKey) {
@@ -133,6 +140,10 @@ public class LesivkaKeyboard extends InputMethodService implements
                     break;
                 }
                 ic.setComposingText("", 1);  // trick to fix an input of acute in Android Browser
+            case KEYCODE_SPACE:
+                if (autoShift && lastCode == KEYCODE_FULL_STOP) {
+                    kv.setShifted(true);
+                }
             default:
                 if (getAutoAcute() && doubleKey && lastCode == primaryCode && acutable(before)) {
                     onKey(KEYCODE_ACUTE, new int[] {});
