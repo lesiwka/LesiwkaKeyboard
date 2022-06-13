@@ -53,7 +53,7 @@
         android:layout_marginTop="10dp"
         android:autoLink="web"
         android:elegantTextHeight="false"
-        android:text="@string/visit_www"
-        android:textAlignment="center" />
+        android:gravity="center"
+        android:text="@string/visit_www" />
 
 </LinearLayout>
