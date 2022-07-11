@@ -19,7 +19,7 @@ import java.util.TimerTask;
 public class LesivkaKeyboard extends InputMethodService implements
         KeyboardView.OnKeyboardActionListener {
 
-    private static final String ACUTABLE = "bcčdđfghklmnprsštvxzžƶ";
+    private static final String ACUTABLE = "bcčdđfghklmnprsštvwxzžƶ";
     private static final String ACUTABLE_UPPER = ACUTABLE.toUpperCase();
     private static final int KEYCODE_SWITCH = -101;
     private static final int KEYCODE_ACUTE = 0x301;
