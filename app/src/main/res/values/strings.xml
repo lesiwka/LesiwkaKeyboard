@@ -7,5 +7,6 @@
     <string name="vibrate">Vibrate on tap</string>
     <string name="keyboard_settings_button">Go to Settings</string>
     <string name="keyboard_settings_label">Enable Lesiwka Keyboard in layout settings</string>
-    <string name="visit_www">For more info visit\nlesivka.com</string>
+    <string name="visit_www">For more info visit</string>
+    <string name="www" translatable="false">lesiwka.com</string>
 </resources>

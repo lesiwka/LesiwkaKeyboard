@@ -51,9 +51,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:autoLink="web"
-        android:elegantTextHeight="false"
         android:gravity="center"
         android:text="@string/visit_www" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="center"
+        android:text="@string/www" />
 
 </LinearLayout>
