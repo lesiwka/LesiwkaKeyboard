@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.lesivka.keyboard"
         minSdkVersion 21
-        targetSdkVersion 32
-        versionCode 3
-        versionName "0.4.0"
+        targetSdkVersion 33
+        versionCode 4
+        versionName "0.4.5"
     }
     buildTypes {
         release {
@@ -18,5 +18,5 @@ android {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations-java5:23.0.0'
+    implementation 'org.jetbrains:annotations-java5:24.0.1'
 }
